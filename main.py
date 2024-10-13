@@ -1,28 +1,26 @@
-#Import OS module
-import os
-
-#Import module to read CSV
 import csv
 
-def linear_search(arr, target):
-    for index in range (len(arr)):
-        if arr[index] == target
-        return index
-    
-    return -1
+def serial_search_csv(file_path, target_value, column_name):
 
-#Set path for source file
-CSV_PATH = os.path.join ('Resource', 'budget_data (1).csv')
+    matching_rows = []
 
-#Open and read CSV
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
-data=[]
-with open(CSV_PATH) as csvfile:
+    with open(file_path, 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            if row[column_name] == target_value:
+                matching_rows.append(row)
 
-#Specify delimiter and CSV reader
-    csvreader = csv.reader(csvfile, delimiter=",")
+    return matching_rows
 
-#Read header row, store it
-    csv_header = next(csvreader)
+file_path = '/Users/q.gaffney/Lab-3/Resource/budget_data.csv'
+target_value = '951227'
+column_name = 'Profit/Losses'
 
-col = [x[0] for x in data]
+result = serial_search_csv(file_path, target_value, column_name)
+
+if result:
+    print("Results:")
+    for row in result:
+        print(row)
+else:
+    print("No results found.")
