@@ -1,26 +1,41 @@
 import csv
 
-def serial_search_csv(file_path, target_value, column_name):
+def serial_search_csv(filename, target_value, column_name):
 
-    matching_rows = []
-
-    with open(file_path, 'r') as file:
+    with open(filename, 'r') as file:
         reader = csv.DictReader(file)
+        row_number = 1
         for row in reader:
             if row[column_name] == target_value:
-                matching_rows.append(row)
+                return row_number
+            row_number += 1
+    return -1
 
-    return matching_rows
+def binary_search_csv(filename, target_value, column_name):
 
-file_path = '/Users/q.gaffney/Lab-3/Resource/budget_data.csv'
-target_value = '951227'
+    with open(filename, 'r') as file:
+        reader = csv.DictReader(file)
+        rows = list(reader)
+        low, high = 0, len(rows) - 1
+
+        while low <= high:
+            mid = (low + high) // 2
+            if rows[mid][column_name] == target_value:
+                return mid + 1
+            elif rows[mid][column_name] < target_value:
+                low = mid + 1
+            else:
+                high = mid - 1
+
+    return -1
+
+# Example usage
+filename = '/Users/q.gaffney/Lab-3/Resource/budget_data.csv'
+target_value = '1141840'
 column_name = 'Profit/Losses'
 
-result = serial_search_csv(file_path, target_value, column_name)
+serial_result = serial_search_csv(filename, target_value, column_name)
+print("Result of serial search:", serial_result)
 
-if result:
-    print("Results:")
-    for row in result:
-        print(row)
-else:
-    print("No results found.")
+binary_result = binary_search_csv(filename, target_value, column_name)
+print("Result of binary search:", binary_result)
